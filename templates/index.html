@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block head %}
+   
+{% endblock %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block main %}
+    <div 
+    class="avatar rounded-circle border d-flex justify-content-center align-items-center"
+    alt="Avatar"
+    >
+        <i class="fa fa-solid fa-user"></i>
+    </div>
+
+    <h2>{{ name }}</h2>
+
+    <p class="summary">
+        Full-stack programmer and CC student at UFAL
+    </p>
+
+    <ul class="links">
+        <li>
+            <a href="/">Portfólio</a>
+        </li>
+        <li>
+            <a href="/">Currículo</a>
+        </li>
+    </ul>
+
+    <a class="edit" href="/edit">
+        Edit profile
+    </a>
+{% endblock %}

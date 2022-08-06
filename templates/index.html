@@ -18,20 +18,43 @@
 
     <h2>{{ name }}</h2>
 
-    <p class="summary">
-        Full-stack programmer and CC student at UFAL
-    </p>
+    {% if summary %}
 
+        <p class="summary">
+           {{ summary }}
+        </p>
+
+    {% endif %}
     <ul class="links">
-        <li>
-            <a href="/">Portfólio</a>
-        </li>
-        <li>
-            <a href="/">Currículo</a>
-        </li>
+        {% for link in links %}
+            <li>
+                <a href="{{ link.url }}" target="_blank">{{ link.label }}</a>
+            </li>
+        {% endfor %}
     </ul>
 
-    <a class="edit" href="/edit">
-        Edit profile
-    </a>
+    <ul class="social-networks">
+        {% for user_social_network in user_social_networks %}
+            <li>
+                <a href="{{ user_social_network.url }}" target="_blank">
+                    {% if user_social_network.social_network.name == "Instagram" %}
+                        <i class="fa fa-instagram"></i>
+                    {% elif user_social_network.social_network.name == "Facebook" %}
+                        <i class="fa fa-facebook-square"></i>
+                    {% elif user_social_network.social_network.name == "Linkedin" %}
+                        <i class="fa fa-linkedin-square"></i>
+                    {% elif user_social_network.social_network.name == "GitHub" %}
+                        <i class="fa fa-github-square"></i>
+                    {% elif user_social_network.social_network.name == "Twitter" %}
+                        <i class="fa fa-twitter"></i>
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% if is_owner %}
+        <a class="edit" href="/edit">
+            Edit profile
+        </a>
+    {% endif %}
 {% endblock %}

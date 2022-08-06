@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, session
+from crypt import methods
+from unicodedata import category
+from flask import Flask,abort, render_template, request, redirect, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_migrate import Migrate
@@ -17,11 +19,15 @@ Session(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
-
-social_networks = db.Table('users_social_networks',
-                            db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-                            db.Column('social_network_id', db.Integer, db.ForeignKey('social_network.id'))
-                            )
+                        
+class UsersSocialNetworks(db.Model):
+    __tablename__ = 'users_social_networks'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    social_network_id = db.Column(db.Integer, db.ForeignKey('social_network.id'), nullable=False)
+    url = db.Column(db.String(120), nullable=False)
+    user = db.relationship('User', back_populates='social_networks')
+    social_network = db.relationship('SocialNetwork', back_populates='users')
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +35,7 @@ class User(db.Model):
     password = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     summary = db.Column(db.String(200), nullable=True)
-    social_networks = db.relationship('SocialNetwork', secondary=social_networks, lazy='subquery')
+    social_networks = db.relationship('UsersSocialNetworks', back_populates="user", lazy='subquery')
 
 class Link(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,6 +48,7 @@ class SocialNetwork(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), nullable=False)
     prefix = db.Column(db.String(40), nullable=True)
+    users = db.relationship('UsersSocialNetworks', back_populates="social_network", lazy='subquery')
 
 
 @app.after_request
@@ -59,8 +66,9 @@ def after_request(r):
 def index():
     user_id = session["user_id"]
     user = User.query.get(user_id)
+    user_social_networks = user.social_networks
 
-    return render_template("index.html", name=user.name, summary=user.summary, links=user.links)
+    return render_template("index.html", name=user.name, summary=user.summary, links=user.links, user_social_networks = user_social_networks, is_owner = True)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -134,3 +142,132 @@ def register():
 def logout():
     session.clear()
     return redirect("/login")
+
+@app.route("/edit", methods=['GET', 'POST'])
+@login_required
+def edit():
+    user_id = session["user_id"]
+    user = User.query.get(user_id)
+    social_networks = SocialNetwork.query.all()
+    user_social_networks = user.social_networks
+
+    print("social_networks", social_networks)
+    if request.method=="POST":
+        # print("USER CARALHO", user.name, user.summary)
+        if not user:
+            abort(404)
+
+        data = request.get_json()
+        new_summary = data.get("summary")
+        new_link = data.get("link")
+        new_social_network = data.get("social_network")
+
+        if new_summary != None:
+            user.summary = new_summary
+        
+        if new_link != None:
+            label = new_link.get("label")
+            url = new_link.get("url")
+            if label == None:
+                return jsonify({"error": "Label is required."})
+            
+            if url == None:
+                return jsonify({"error": "URL is required."})
+
+            
+            # print("LINK CARFALOAOSDOASDO", label, url)
+
+            link = Link(url=url, user=user, label=label)
+            db.session.add(link)
+        
+        if new_social_network != None:
+            social_network_id = int(new_social_network.get("id"))
+            url = new_social_network.get("url")
+
+            if not social_network_id:
+                return jsonify({"error": "Social network is required."})
+            
+            if not url:
+                return jsonify({"error": "URL is required."})
+            
+            find_social_network = SocialNetwork.query.get(social_network_id)
+
+            if not find_social_network:
+                return jsonify({"error": "Social network is not valid."})
+            
+            find_user_social_network = UsersSocialNetworks.query.filter_by(user_id=user_id, social_network_id=social_network_id).first()
+
+            if find_user_social_network:
+                print("USER ALREADY HAS")
+                return jsonify(message=f"User already has this social network ({find_social_network.name}).", type="error"), 400
+            
+            user_social_network = UsersSocialNetworks(user=user, social_network=find_social_network, url=url)
+            db.session.add(user_social_network)
+        
+        db.session.commit()
+
+        return "success"
+        
+    
+
+    return render_template("edit.html", summary=user.summary, links=user.links, social_networks=social_networks, user_social_networks=user_social_networks)
+
+
+@app.route("/links/<int:link_id>", methods=['DELETE'])
+@login_required
+def delete_link(link_id):
+    if not link_id:
+        return jsonify({"error": "Link id is required."})
+
+    link = Link.query.get(link_id)
+
+    if not link:
+        return jsonify({"error": "Link is not valid."})
+
+    user_id = session["user_id"]
+    
+    if link.user_id != user_id:
+        return jsonify({"error": "Link is not valid."})
+
+    db.session.delete(link)
+    db.session.commit()
+
+    return "success" 
+
+@app.route("/users-social-networks/<int:user_social_network_id>", methods=['DELETE'])
+@login_required
+def delete_user_social_networks(user_social_network_id):
+    if not user_social_network_id:
+        return jsonify({"error": "User Social Network ID is required."})
+
+    user_social_network = UsersSocialNetworks.query.get(user_social_network_id)
+
+    if not user_social_network:
+        return jsonify({"error": "User Social Network ID is not valid."})
+    
+    user_id = session["user_id"]
+
+    if user_social_network.user_id != user_id:
+        return jsonify({"error": "User Social Network ID is not valid."})
+
+    db.session.delete(user_social_network)
+    db.session.commit()
+
+    return "success"
+
+@app.route("/<int:user_id>")
+def view(user_id):
+    if not user_id:
+        return jsonify({"error": "User id is required."}), 400
+    
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"error": "User is not valid."}), 400
+    user_social_networks = user.social_networks
+
+    is_owner = user_id ==  session.get("user_id")
+
+    print("is_owner", is_owner)
+
+    return render_template("index.html", name=user.name, summary=user.summary, links=user.links, user_social_networks=user_social_networks, is_owner=is_owner)

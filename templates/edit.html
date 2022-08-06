@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/modal.css">
+{% endblock %}
+
+{% block title %}
+    Edit
+{% endblock %}
+
+{% block main %}
+    <div class="modal fade" id="linkModal" tabindex="-1" aria-labelledby="linkModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="form-add-link"v class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="linkModalLabel">Add Link</h5>
+                    <button id="close-add-link" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="label-input" class="form-label">Label</label>
+                        <input required id="label" type="text" class="form-control" id="label-input" placeholder="Instagram">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="url-input" class="form-label">URL</label>
+                        <input  required type="url" id="url" class="form-control" id="url-input" placeholder="https://instagram.com">
+                    </div> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="close-modal" data-bs-dismiss="modal">Close</button>
+                    <button id="btn-add-link" type="submit" class="save-modal">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal fade" id="socialNetworkModal" tabindex="-1" aria-labelledby="socialNetworkModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="form-add-social-network"v class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="socialNetworkModalLabel">Add Social Network</h5>
+                    <button id="close-add-social-network" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"> 
+                    <div class="mb-3">
+                        <!-- <label for="label-input" class="form-label">Name</label> -->
+                        <select required  id="idSelect"  class="form-select" aria-label="Social Network">
+                            <option value="" disabled selected>Select Social Network</option>
+                            {% for social_network in social_networks %}
+                                <option value="{{ social_network.id }}">{{ social_network.name }}</option>
+                            {% endfor %}
+                          </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="url-input" class="form-label">URL</label>
+                        <input  required type="url" id="url" class="form-control" id="url-input" placeholder="https://instagram.com">
+                    </div>        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="close-modal" data-bs-dismiss="modal">Close</button>
+                    <button id="btn-add-social-network" type="submit" class="save-modal">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="avatar rounded-circle border d-flex justify-content-center align-items-center">
+        <i class="fa fa-solid fa-user"></i>
+    </div>
+    <h2>{{ name }}</h2>
+    <!-- <p class="summary">
+        Full-stack programmer and CC student at UFAL <i class="edit-icon fa-solid fa-pen"></i>
+    </p> -->
+
+    {% if summary %}
+        <div class="summary-container"> 
+            <textarea id="summary-input" type="text" maxlength="80" >{{ summary }}</textarea>
+            <i class="fa fa-solid fa-pen edit-summary"></i>
+        </div>
+        
+        <button type="button" class="add-summary hidden">
+            
+            <i class="fa fa-solid fa-pen"></i> Add Summary
+        </button>
+    {% else %}
+        <div class="summary-container hidden"> 
+            <textarea id="summary-input" type="text" maxlength="80" ></textarea>
+            <i class="fa fa-solid fa-pen hidden edit-summary"></i>
+        </div>
+        
+        <button type="button" class="add-summary">
+            
+            <i class="fa fa-solid fa-pen"></i> Add Summary
+        </button>
+    {% endif %}
+    
+    <ul class="links">
+        {% for link in links %}
+            <li>
+                <a href="{{ link.url }}" target="_blank">{{ link.label }}</a>
+                <i onclick="delete_user_link('{{ link.id }}')" class="fa fa-solid fa-trash edit-icon "></i>
+            </li>
+        {% endfor %}
+        <button type="button" class="add-link" data-bs-toggle="modal" data-bs-target="#linkModal">
+            <i class="fa fa-solid fa-plus"></i> Add Link
+        </button>
+    </ul>
+    
+    <ul class="social-networks">
+        {% for user_social_network in user_social_networks %}
+            <li>
+                <a href="{{ user_social_network.url }}" target="_blank">
+                    {% if user_social_network.social_network.name == "Instagram" %}
+                        <i class="fa fa-instagram"></i>
+                    {% elif user_social_network.social_network.name == "Facebook" %}
+                        <i class="fa fa-facebook-square"></i>
+                    {% elif user_social_network.social_network.name == "Linkedin" %}
+                        <i class="fa fa-linkedin-square"></i>
+                    {% elif user_social_network.social_network.name == "GitHub" %}
+                        <i class="fa fa-github-square"></i>
+                    {% elif user_social_network.social_network.name == "Twitter" %}
+                        <i class="fa fa-twitter"></i>
+                    {% endif %}
+                </a>
+                <i onclick="delete_user_social_network('{{ user_social_network.id }}')" class="edit-icon fa-solid fa-trash"></i>         
+            </li>
+        {% endfor %}
+        <!-- <li>
+            <a href="https://www.facebook.com/profile.php?id=100009087170900" target="_blank">
+                <i class="fa fa-facebook-square"></i>
+            </a>  
+            <i class="edit-icon fa-solid fa-trash"></i>         
+        </li>
+        <li>
+            <a href="https://www.linkedin.com/in/julio-silva-de-souza-a8a8b817b/" target="_blank">
+                <i class="fa fa-linkedin-square"></i>
+            </a>
+            <i class="edit-icon fa-solid fa-trash"></i>
+        </li>
+
+        <li>
+            <a href="https://www.instagram.com/ruantmelo/" target="_blank">
+                <i class="fa fa-instagram"></i>
+            </a>
+            <i class="edit-icon fa-solid fa-trash"></i>
+        </li>
+
+        <li>
+            <a href="#" target="_blank">
+                <i class="fa fa-github-square"></i>
+            </a>
+            <i class="edit-icon fa-solid fa-trash"></i>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <i class="fa fa-twitter"></i>
+            </a>
+            <i class="edit-icon fa-solid fa-trash"></i>
+        </li> -->
+        <button type="button" class="add-social-network" data-bs-toggle="modal" data-bs-target="#socialNetworkModal">
+            <i class="fa fa-solid fa-plus"></i>
+        </button>
+    </ul>
+
+    <button type="button" class="edit-profile" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+        <i class="fa fa-solid fa-pen"></i> Edit Profile
+    </button>
+
+{% endblock %}
+"""

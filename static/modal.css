@@ -1,0 +1,30 @@
+.modal-content{
+    background: var(--dark-blue);
+}
+
+.modal-header, .modal-footer{
+    border: none !important;
+}
+
+
+.close-modal, .save-modal{
+    font-size: 1rem;
+    font-weight: medium;
+    cursor: pointer;
+    border: none;
+    padding: 0.2rem 0.5rem;
+    
+}
+
+.close-modal{
+    background: none;
+    color: var(--light-pink);
+}
+
+
+.save-modal{
+    background: var(--medium-blue);
+    color: white;
+    border-radius: .1rem;
+    min-width: 5rem;
+}

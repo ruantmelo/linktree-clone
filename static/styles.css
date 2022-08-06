@@ -18,9 +18,15 @@ body{
     background-color: var(--dark-blue);
     padding: 2rem;
     color: var(--beige);
-    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
+}
+
+html {
+    height: -webkit-fill-available;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -71,27 +77,172 @@ i.fa-user{
     margin-top: 1rem;
 }
 
-.links{
+.summary .edit-icon{
+    margin-left: 1rem;
+}
+
+/* .summary .edit-icon{
+    color: var(--beige);
+} */
+
+.links, .social-networks{
     list-style: none;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+   
     gap: 1rem;
     width: 100%;
     padding: 0;
 }
 
+.links{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-networks{
+    margin-top: 1rem;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.social-networks i:not(.edit-icon){
+    color: var(--medium-blue);
+    font-size: 2rem;
+    transition: all 0.2s ease-in-out;
+}
+.social-networks i.edit-icon{
+    color: var(--beige);
+    font-size: 0.8rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.social-networks i.edit-icon:hover{
+    color: var(--light-pink);
+}
+
+.social-networks i:not(.edit-icon):hover{
+    color: var(--beige);
+}
+
 .links li{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.links a{
+    width: 100%;
+    display: block; 
     background-color: var(--medium-blue);
     color: white;
     transition: all 0.2s ease-in-out;
     border-radius: 0.2rem;
 }
 
-.links li:hover{
+.links a:hover{
     filter: brightness(0.8);
 }
+
+.links div .edit-icon{
+    
+}
+
+.summary-container .edit-summary, .edit-icon{
+    color: var(--beige);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.summary-container .edit-summary:hover,.edit-icon:hover{
+    color: var(--light-pink);
+}
+
+.links li:not(.add-link){
+   
+}
+
+.add-link, .add-summary, .add-social-network {
+    display: block;
+    border-radius: 0.2rem;
+    border: 1px dashed var(--medium-blue);
+    color: var(--medium-blue);
+    text-align: center;
+    background: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.add-social-network{
+    padding: 0.2rem;
+    width: 2rem;
+}
+
+.add-social-network:hover{
+    filter: brightness(0.8);
+}
+
+.add-social-network i{
+    font-size: 1rem !important;
+}
+
+.add-social-network i:hover{
+    color: inherit !important;
+    
+}
+
+.add-link{
+    cursor: pointer;
+}
+
+.add-link, .add-summary{
+     width: 100%;
+     padding: 0.5rem 1rem;
+     
+}
+
+.add-summary{
+    margin-bottom: 1.5rem;
+    cursor: text !important;
+}
+
+
+.hidden{
+    display: none !important;
+}
+
+.summary-container{
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+#summary-input{
+    background-color: transparent;
+    color: var(--pink);
+    border: none;
+    outline: none;
+    width: 100%;
+    /* border: 1px solid black; */
+    resize: none;
+    text-align: center;
+}
+
+#summary-input:read-only{
+    cursor: default;
+}
+
+.add-link:hover, .add-summary:hover{
+    filter: brightness(0.8);
+}
+
+
+/* .view{
+    color: white;
+} */
+
 
 .links li a{
     color: white;
@@ -106,14 +257,13 @@ i.fa-user{
     width: 100%;
 }
 
-.edit{
+.edit, .view{
     color: var(--beige);
     transition: all 0.2s ease-in-out;
 }
 
-.edit:hover{
-    color: var(--beige);
-    filter: brightness(0.8);
+.edit:hover, .view:hover{
+    color: var(--light-pink);
 }
 
 
@@ -136,6 +286,7 @@ header nav a:hover{
 
 .container{
     width: fit-content;
+    min-width: 350px;
     margin: 3rem auto;
     display: flex;
     align-items: center;
@@ -151,14 +302,14 @@ header nav a:hover{
     margin: 2rem auto;
 }
 
-.access-form input{
+.access-form input, .modal input, .modal select{
     background-color: var(--medium-blue);
     color: white;
     border: none;
     outline: none;
 }
 
-.access-form input:focus{
+.access-form input:focus, .modal input:focus{
     background-color: var(--medium-blue);
     outline: none !important; 
     box-shadow: 0 0 0 0.1rem var(--beige);
@@ -184,3 +335,4 @@ header nav a:hover{
     width: fit-content;
     margin: 0 auto;
 }
+

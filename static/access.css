@@ -1,0 +1,18 @@
+.access-form{
+    gap: 1rem;
+    min-width: 20rem;
+    max-width: 25rem;
+    color: var(--light-pink);
+    margin: 2rem auto;
+}
+
+.button-container{
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.button-container button{
+    min-width: 8rem;
+    margin: 0;
+}
+

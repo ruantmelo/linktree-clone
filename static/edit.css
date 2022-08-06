@@ -1,0 +1,87 @@
+
+
+.add-link, .add-summary, .add-social-network {
+    display: block;
+    border-radius: 0.2rem;
+    border: 1px dashed var(--medium-blue);
+    color: var(--medium-blue);
+    text-align: center;
+    background: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.add-summary {
+    margin-bottom: 1.5rem;
+    cursor: text !important;
+}
+
+.summary-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+#summary-input {
+    background-color: transparent;
+    color: var(--pink);
+    border: none;
+    outline: none;
+    width: 100%;
+    resize: none;
+    text-align: center;
+}
+
+#summary-input:read-only {
+    cursor: default;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.add-link, .add-summary {
+    width: 100%;
+    padding: 0.5rem 1rem;
+}
+
+.add-link {
+    cursor: pointer;
+}
+
+.add-link:hover, .add-summary:hover {
+    filter: brightness(0.8);
+}
+
+.add-social-network {
+    padding: 0.2rem;
+    width: 2rem;
+}
+
+.add-social-network:hover {
+    filter: brightness(0.8);
+}
+
+.add-social-network i {
+    font-size: 1rem !important;
+}
+
+.add-social-network i:hover {
+    color: inherit !important;  
+}
+
+
+.edit-icon, .delete-icon {
+    color: var(--beige);
+    transition: all 0.2s ease-in-out;
+}
+
+.view {
+    color: var(--light-pink);
+    transition: all 0.2s ease-in-out;
+}
+
+.view:hover {
+    color: var(--beige);
+}

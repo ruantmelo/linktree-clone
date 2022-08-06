@@ -2,6 +2,8 @@
 
 {% block head %}
     <link rel="stylesheet" href="/static/modal.css">
+    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="/static/edit.css">
 {% endblock %}
 
 {% block title %}
@@ -19,17 +21,17 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="label-input" class="form-label">Label</label>
-                        <input required id="label" type="text" class="form-control" id="label-input" placeholder="Instagram">
+                        <input required autocomplete="off" autofocus id="label" type="text" class="form-control" id="label-input" placeholder="My Website">
                     </div>
 
                     <div class="mb-3">
                         <label for="url-input" class="form-label">URL</label>
-                        <input  required type="url" id="url" class="form-control" id="url-input" placeholder="https://instagram.com">
+                        <input required autocomplete="off" type="url" id="url" class="form-control" id="url-input" placeholder="https://www.mywebsite.com">
                     </div> 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="close-modal" data-bs-dismiss="modal">Close</button>
-                    <button id="btn-add-link" type="submit" class="save-modal">Add</button>
+                    <button id="btn-add-link" type="submit" class="save-modal">Save</button>
                 </div>
             </form>
         </div>
@@ -43,23 +45,22 @@
                 </div>
                 <div class="modal-body"> 
                     <div class="mb-3">
-                        <!-- <label for="label-input" class="form-label">Name</label> -->
                         <select required  id="idSelect"  class="form-select" aria-label="Social Network">
                             <option value="" disabled selected>Select Social Network</option>
-                            {% for social_network in social_networks %}
-                                <option value="{{ social_network.id }}">{{ social_network.name }}</option>
+                            {% for social_network_available in social_networks_available %}   
+                                <option value="{{ social_network_available.id }}">{{ social_network_available.name }}</option>
                             {% endfor %}
                           </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="url-input" class="form-label">URL</label>
-                        <input  required type="url" id="url" class="form-control" id="url-input" placeholder="https://instagram.com">
+                        <input  required autocomplete="off" type="url" id="url" class="form-control" id="url-input" placeholder="https://instagram.com">
                     </div>        
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="close-modal" data-bs-dismiss="modal">Close</button>
-                    <button id="btn-add-social-network" type="submit" class="save-modal">Add</button>
+                    <button id="btn-add-social-network" type="submit" class="save-modal">Save</button>
                 </div>
             </form>
         </div>
@@ -74,7 +75,7 @@
 
     {% if summary %}
         <div class="summary-container"> 
-            <textarea id="summary-input" type="text" maxlength="80" >{{ summary }}</textarea>
+            <textarea id="summary-input" autocomplete="off" type="text" maxlength="80" >{{ summary }}</textarea>
             <i class="fa fa-solid fa-pen edit-summary"></i>
         </div>
         
@@ -84,8 +85,8 @@
         </button>
     {% else %}
         <div class="summary-container hidden"> 
-            <textarea id="summary-input" type="text" maxlength="80" ></textarea>
-            <i class="fa fa-solid fa-pen hidden edit-summary"></i>
+            <textarea id="summary-input" autocomplete="off" type="text" maxlength="80" ></textarea>
+            <i class="edit-icon fa fa-solid fa-pen hidden edit-summary"></i>
         </div>
         
         <button type="button" class="add-summary">
@@ -98,7 +99,7 @@
         {% for link in links %}
             <li>
                 <a href="{{ link.url }}" target="_blank">{{ link.label }}</a>
-                <i onclick="delete_user_link('{{ link.id }}')" class="fa fa-solid fa-trash edit-icon "></i>
+                <i onclick="delete_user_link('{{ link.id }}')" class="fa-solid fa-trash delete-icon "></i>
             </li>
         {% endfor %}
         <button type="button" class="add-link" data-bs-toggle="modal" data-bs-target="#linkModal">
@@ -122,49 +123,18 @@
                         <i class="fa fa-twitter"></i>
                     {% endif %}
                 </a>
-                <i onclick="delete_user_social_network('{{ user_social_network.id }}')" class="edit-icon fa-solid fa-trash"></i>         
+                <i onclick="delete_user_social_network('{{ user_social_network.id }}')" class="delete-icon fa-solid fa-trash"></i>         
             </li>
         {% endfor %}
-        <!-- <li>
-            <a href="https://www.facebook.com/profile.php?id=100009087170900" target="_blank">
-                <i class="fa fa-facebook-square"></i>
-            </a>  
-            <i class="edit-icon fa-solid fa-trash"></i>         
-        </li>
-        <li>
-            <a href="https://www.linkedin.com/in/julio-silva-de-souza-a8a8b817b/" target="_blank">
-                <i class="fa fa-linkedin-square"></i>
-            </a>
-            <i class="edit-icon fa-solid fa-trash"></i>
-        </li>
-
-        <li>
-            <a href="https://www.instagram.com/ruantmelo/" target="_blank">
-                <i class="fa fa-instagram"></i>
-            </a>
-            <i class="edit-icon fa-solid fa-trash"></i>
-        </li>
-
-        <li>
-            <a href="#" target="_blank">
-                <i class="fa fa-github-square"></i>
-            </a>
-            <i class="edit-icon fa-solid fa-trash"></i>
-        </li>
-        <li>
-            <a href="#" target="_blank">
-                <i class="fa fa-twitter"></i>
-            </a>
-            <i class="edit-icon fa-solid fa-trash"></i>
-        </li> -->
         <button type="button" class="add-social-network" data-bs-toggle="modal" data-bs-target="#socialNetworkModal">
             <i class="fa fa-solid fa-plus"></i>
         </button>
     </ul>
 
-    <button type="button" class="edit-profile" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-        <i class="fa fa-solid fa-pen"></i> Edit Profile
-    </button>
+    <a href="/" class="view">Go to view mode</a>
+    <!-- <button type="button"  data-bs-toggle="modal" data-bs-target="#editProfileModal">
+        <i class="fa fa-solid fa-pen"></i> 
+    </button> -->
 
 {% endblock %}
 """

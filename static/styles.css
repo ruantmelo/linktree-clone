@@ -33,306 +33,39 @@ h1, h2, h3, h4, h5, h6{
     font-family: "Montserrat", sans-serif;
 }
 
-footer{
-    margin-top: auto;
-    margin-bottom: 3rem;
-    display: block;
-}
-
-footer h3{
-    text-align: center;
-    color: var(--medium-blue);
-}
-
-h2{
-    text-align: center;
-}
-
-header{
-    width: 100%;
-}
-
-.avatar{
-    width: 8rem;
-    height: 8rem;
-    border-radius: 50%;
-    border: 2px solid var(--beige);
-    margin: 0 auto 1rem auto; 
-}
-
-
-i.fa-user{
-    color: white;
-    font-size: 4rem;
-    /* width: 1rem;
-    height: 1rem; */
-}
-
-.summary{
-    /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; */
-    color: var(--pink);
-    margin-top: 1rem;
-}
-
-.summary .edit-icon{
-    margin-left: 1rem;
-}
-
-/* .summary .edit-icon{
-    color: var(--beige);
-} */
-
-.links, .social-networks{
-    list-style: none;
-    display: flex;
-   
-    gap: 1rem;
-    width: 100%;
-    padding: 0;
-}
-
-.links{
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.social-networks{
-    margin-top: 1rem;
-    justify-content: center;
-    gap: 1rem;
-}
-
-.social-networks i:not(.edit-icon){
-    color: var(--medium-blue);
-    font-size: 2rem;
-    transition: all 0.2s ease-in-out;
-}
-.social-networks i.edit-icon{
-    color: var(--beige);
-    font-size: 0.8rem;
-    transition: all 0.2s ease-in-out;
-}
-
-.social-networks i.edit-icon:hover{
-    color: var(--light-pink);
-}
-
-.social-networks i:not(.edit-icon):hover{
-    color: var(--beige);
-}
-
-.links li{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-}
-
-.links a{
-    width: 100%;
-    display: block; 
-    background-color: var(--medium-blue);
-    color: white;
-    transition: all 0.2s ease-in-out;
-    border-radius: 0.2rem;
-}
-
-.links a:hover{
-    filter: brightness(0.8);
-}
-
-.links div .edit-icon{
-    
-}
-
-.summary-container .edit-summary, .edit-icon{
-    color: var(--beige);
+i {
     cursor: pointer;
     transition: all 0.2s ease-in-out;
 }
 
-.summary-container .edit-summary:hover,.edit-icon:hover{
-    color: var(--light-pink);
-}
-
-.links li:not(.add-link){
-   
-}
-
-.add-link, .add-summary, .add-social-network {
-    display: block;
-    border-radius: 0.2rem;
-    border: 1px dashed var(--medium-blue);
-    color: var(--medium-blue);
-    text-align: center;
-    background: none;
-    transition: all 0.2s ease-in-out;
-}
-
-.add-social-network{
-    padding: 0.2rem;
-    width: 2rem;
-}
-
-.add-social-network:hover{
-    filter: brightness(0.8);
-}
-
-.add-social-network i{
-    font-size: 1rem !important;
-}
-
-.add-social-network i:hover{
-    color: inherit !important;
-    
-}
-
-.add-link{
-    cursor: pointer;
-}
-
-.add-link, .add-summary{
-     width: 100%;
-     padding: 0.5rem 1rem;
-     
-}
-
-.add-summary{
-    margin-bottom: 1.5rem;
-    cursor: text !important;
-}
-
-
-.hidden{
-    display: none !important;
-}
-
-.summary-container{
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
-#summary-input{
-    background-color: transparent;
-    color: var(--pink);
-    border: none;
-    outline: none;
-    width: 100%;
-    /* border: 1px solid black; */
-    resize: none;
-    text-align: center;
-}
-
-#summary-input:read-only{
-    cursor: default;
-}
-
-.add-link:hover, .add-summary:hover{
-    filter: brightness(0.8);
-}
-
-
-/* .view{
-    color: white;
-} */
-
-
-.links li a{
-    color: white;
-   
-    display: inline-block;
-    width: 100%;
-    padding: 0.5rem 1rem;
-    text-align: center;
-}
-
-.links li{
-    width: 100%;
-}
-
-.edit, .view{
-    color: var(--beige);
-    transition: all 0.2s ease-in-out;
-}
-
-.edit:hover, .view:hover{
-    color: var(--light-pink);
-}
-
-
-header nav{
-    margin-left: auto;
-    width: fit-content;
-    display: flex;
-    gap: 1rem;
-}
-
-header nav a{
-    color: var(--medium-blue);
-    text-decoration: none;
-    transition: all 0.2s ease-in-out;
-}
-
-header nav a:hover{
-    color: var(--light-pink);
-}
-
-.container{
-    width: fit-content;
-    min-width: 350px;
-    margin: 3rem auto;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-
-.access-form{
-    gap: 1rem;
-    min-width: 20rem;
-    max-width: 25rem;
-    color: var(--light-pink);
-    margin: 2rem auto;
-}
-
-.access-form input, .modal input, .modal select{
+.form-control, .form-select {
     background-color: var(--medium-blue);
     color: white;
     border: none;
     outline: none;
 }
 
-.access-form input:focus, .modal input:focus{
+.form-control:focus {
     background-color: var(--medium-blue);
-    outline: none !important; 
-    box-shadow: 0 0 0 0.1rem var(--beige);
+    /* outline: none !important; 
+    box-shadow: 0 0 0 0.1rem var(--beige); */
     border: none;
     color: white;
 }
 
-.access-form button[type="submit"]{
+button[type="submit"]{
     background-color: var(--medium-blue);
     color: white;
     cursor: pointer;
     border: none;
     transition: all 0.2s ease-in-out;
-    min-width: 8rem;
     margin: 0 auto;
 }
 
-.access-form button[type="submit"]:hover{
+button[type="submit"]:hover{
+    background-color: var(--medium-blue);
+    color: white;
+    cursor: pointer;
     filter: brightness(0.8);
-}
-
-.button-container{
-    width: fit-content;
-    margin: 0 auto;
 }
 

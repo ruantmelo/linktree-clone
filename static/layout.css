@@ -1,0 +1,46 @@
+
+footer {
+    margin-top: auto;
+    margin-bottom: 3rem;
+    display: block;
+}
+
+footer h3 {
+    text-align: center;
+    color: var(--medium-blue);
+}
+
+h2 {
+    text-align: center;
+}
+
+header {
+    width: 100%;
+}
+
+header nav {
+    margin-left: auto;
+    width: fit-content;
+    display: flex;
+    gap: 1rem;
+}
+
+
+header nav a {
+    color: var(--medium-blue);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+header nav a:hover {
+    color: var(--light-pink);
+}
+
+.container {
+    width: fit-content;
+    min-width: 350px;
+    margin: 3rem auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

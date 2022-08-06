@@ -1,0 +1,113 @@
+
+.avatar {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    border: 2px solid var(--beige);
+    margin: 0 auto 1rem auto; 
+}
+
+i.fa-user {
+    color: white;
+    font-size: 4rem;
+}
+
+.summary {
+    color: var(--pink);
+    margin-top: 1rem;
+}
+
+.summary .edit-icon {
+    margin-left: 1rem;
+}
+
+.links, .social-networks {
+    list-style: none;
+    display: flex;
+   
+    gap: 1rem;
+    width: 100%;
+    padding: 0;
+}
+
+.links {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-networks {
+    margin-top: 1rem;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.social-networks i:not(.delete-icon) {
+    color: var(--medium-blue);
+    font-size: 2rem;
+}
+
+.social-networks i.delete-icon {
+    color: var(--beige);
+    font-size: 0.8rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.social-networks i.delete-icon:hover {
+    color: var(--light-pink);
+}
+
+.social-networks i:not(.delete-icon):hover {
+    color: var(--beige);
+}
+
+.links li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.links a {
+    width: 100%;
+    min-width: 8rem;
+    display: block; 
+    background-color: var(--medium-blue);
+    color: white;
+    transition: all 0.2s ease-in-out;
+    border-radius: 0.2rem;
+}
+
+.links a:hover {
+    filter: brightness(0.8);
+}
+
+.summary-container .edit-summary, .delete-icon {
+    color: var(--beige);
+    cursor: pointer;
+}
+
+.summary-container .edit-summary:hover,.delete-icon:hover {
+    color: var(--light-pink);
+}
+
+.links li a {
+    color: white;
+    display: inline-block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    text-align: center;
+}
+
+.links li {
+    width: 100%;
+}
+
+.edit {
+    color: var(--light-pink);
+    transition: all 0.2s ease-in-out;
+}
+
+.edit:hover {
+    color: var(--beige);
+}

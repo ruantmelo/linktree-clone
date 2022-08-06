@@ -78,21 +78,23 @@ def login():
         email=request.form.get('email')
         password=request.form.get('password')
 
-        if not email:
-            return render_template("login.html", error="Password is required.")
+        if not email or email.strip() == '':
+            return render_template("login.html", error="Email is required."), 400
+
+        email = email.lower().strip()
 
         if not password:
-            return render_template("login.html", error="Password is required.")
+            return render_template("login.html", error="Password is required."), 400
 
         user = User.query.filter_by(email=email).first()
 
         if not user:
-            return render_template("login.html", error="Email or password is incorrect.")
+            return render_template("login.html", error="Email or password is incorrect."), 400
         
         password_match = bcrypt.check_password_hash(user.password, password)
 
         if not password_match:
-            return render_template("login.html", error="Email or password is incorrect.")
+            return render_template("login.html", error="Email or password is incorrect."), 400
         
         session['user_id'] = user.id
 
@@ -108,23 +110,25 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
         confirmation = request.form.get("confirmation")
+        
+        if not name or name.strip() == '':
+            return render_template("register.html", error="Name is required."), 400
 
-        if not name:
-            return render_template("register.html", error="Name is required.")
+        if not email or email.strip() == '':
+            return render_template("register.html", error="Email is required."), 400
 
-        if not email:
-            return render_template("register.html", error="Email is required.")
+        email = email.lower().strip()
 
         if not password:
-            return render_template("register.html", error="Password is required.")
+            return render_template("register.html", error="Password is required."), 400
         
         if password != confirmation:
-            return render_template("register.html", error="Passwords do not match.")
+            return render_template("register.html", error="Passwords do not match."), 400
 
         user = User.query.filter_by(email=email).first()
 
         if user:
-            return render_template("register.html", error="Email is already in use.")
+            return render_template("register.html", error="Email is already in use."), 400
 
         password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
@@ -151,11 +155,9 @@ def edit():
     social_networks = SocialNetwork.query.all()
     user_social_networks = user.social_networks
 
-    print("social_networks", social_networks)
-    if request.method=="POST":
-        # print("USER CARALHO", user.name, user.summary)
+    if request.method == "POST":
         if not user:
-            abort(404)
+            return jsonify({"error": "Session error"}), 400
 
         data = request.get_json()
         new_summary = data.get("summary")
@@ -169,13 +171,10 @@ def edit():
             label = new_link.get("label")
             url = new_link.get("url")
             if label == None:
-                return jsonify({"error": "Label is required."})
+                return jsonify({"error": "Label is required."}), 400
             
             if url == None:
-                return jsonify({"error": "URL is required."})
-
-            
-            # print("LINK CARFALOAOSDOASDO", label, url)
+                return jsonify({"error": "URL is required."}), 400
 
             link = Link(url=url, user=user, label=label)
             db.session.add(link)
@@ -185,20 +184,19 @@ def edit():
             url = new_social_network.get("url")
 
             if not social_network_id:
-                return jsonify({"error": "Social network is required."})
+                return jsonify({"error": "Social network is required."}), 400
             
             if not url:
-                return jsonify({"error": "URL is required."})
+                return jsonify({"error": "URL is required."}), 400
             
             find_social_network = SocialNetwork.query.get(social_network_id)
 
             if not find_social_network:
-                return jsonify({"error": "Social network is not valid."})
+                return jsonify({"error": "Social network is not valid."}), 400
             
             find_user_social_network = UsersSocialNetworks.query.filter_by(user_id=user_id, social_network_id=social_network_id).first()
 
             if find_user_social_network:
-                print("USER ALREADY HAS")
                 return jsonify(message=f"User already has this social network ({find_social_network.name}).", type="error"), 400
             
             user_social_network = UsersSocialNetworks(user=user, social_network=find_social_network, url=url)
@@ -209,25 +207,34 @@ def edit():
         return "success"
         
     
+    user_social_networks_ids = []
+    for user_social_network in user_social_networks:
+        user_social_networks_ids.append(user_social_network.social_network_id)
+    
+    social_networks_available = []
 
-    return render_template("edit.html", summary=user.summary, links=user.links, social_networks=social_networks, user_social_networks=user_social_networks)
+    for social_network in social_networks:
+        if social_network.id not in user_social_networks_ids:
+            social_networks_available.append(social_network)
+
+    return render_template("edit.html", summary=user.summary, links=user.links, social_networks_available=social_networks_available, user_social_networks=user_social_networks)
 
 
 @app.route("/links/<int:link_id>", methods=['DELETE'])
 @login_required
 def delete_link(link_id):
     if not link_id:
-        return jsonify({"error": "Link id is required."})
+        return jsonify({"error": "Link id is required."}), 400
 
     link = Link.query.get(link_id)
 
     if not link:
-        return jsonify({"error": "Link is not valid."})
+        return jsonify({"error": "Link is not valid."}), 400
 
     user_id = session["user_id"]
     
     if link.user_id != user_id:
-        return jsonify({"error": "Link is not valid."})
+        return jsonify({"error": "Link is not valid."}), 400
 
     db.session.delete(link)
     db.session.commit()
@@ -238,17 +245,17 @@ def delete_link(link_id):
 @login_required
 def delete_user_social_networks(user_social_network_id):
     if not user_social_network_id:
-        return jsonify({"error": "User Social Network ID is required."})
+        return jsonify({"error": "User Social Network ID is required."}), 400
 
     user_social_network = UsersSocialNetworks.query.get(user_social_network_id)
 
     if not user_social_network:
-        return jsonify({"error": "User Social Network ID is not valid."})
+        return jsonify({"error": "User Social Network ID is not valid."}), 400
     
     user_id = session["user_id"]
 
     if user_social_network.user_id != user_id:
-        return jsonify({"error": "User Social Network ID is not valid."})
+        return jsonify({"error": "User Social Network ID is not valid."}), 400
 
     db.session.delete(user_social_network)
     db.session.commit()
@@ -267,7 +274,5 @@ def view(user_id):
     user_social_networks = user.social_networks
 
     is_owner = user_id ==  session.get("user_id")
-
-    print("is_owner", is_owner)
 
     return render_template("index.html", name=user.name, summary=user.summary, links=user.links, user_social_networks=user_social_networks, is_owner=is_owner)

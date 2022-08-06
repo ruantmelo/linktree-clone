@@ -12,6 +12,11 @@ i.fa-user {
     font-size: 4rem;
 }
 
+#profile-name{
+    font-size: 2rem;
+    color: var(--beige);
+}
+
 .summary {
     color: var(--pink);
     margin-top: 1rem;

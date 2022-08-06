@@ -1,5 +1,13 @@
 
 
+.name-container{
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
 .add-link, .add-summary, .add-social-network {
     display: block;
     border-radius: 0.2rem;
@@ -23,17 +31,27 @@
     margin-bottom: 1rem;
 }
 
-#summary-input {
+#summary-input, #name-input {
     background-color: transparent;
-    color: var(--pink);
     border: none;
     outline: none;
-    width: 100%;
     resize: none;
     text-align: center;
 }
 
-#summary-input:read-only {
+#name-input{
+    font-size: 2rem;
+    color: var(--beige);
+    width: fit-content;
+    font-family: "Montserrat", sans-serif;
+}
+
+#summary-input {
+    color: var(--pink);
+    width: 100%;
+}
+
+#summary-input:read-only, #name-input:read-only {
     cursor: default;
 }
 

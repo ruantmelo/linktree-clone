@@ -114,6 +114,8 @@ def register():
         if not name or name.strip() == '':
             return render_template("register.html", error="Name is required."), 400
 
+        name = name.strip()
+
         if not email or email.strip() == '':
             return render_template("register.html", error="Email is required."), 400
 
@@ -160,11 +162,17 @@ def edit():
             return jsonify({"error": "Session error"}), 400
 
         data = request.get_json()
+        new_name = data.get("name")
         new_summary = data.get("summary")
         new_link = data.get("link")
         new_social_network = data.get("social_network")
 
-        if new_summary != None:
+        if new_name != None and new_name != user.name:
+            if new_name.strip() == '':
+                return jsonify({"error": "Name is required."}), 400
+            user.name = new_name.strip()
+
+        if new_summary != None and new_summary != user.summary:
             user.summary = new_summary
         
         if new_link != None:
@@ -217,7 +225,7 @@ def edit():
         if social_network.id not in user_social_networks_ids:
             social_networks_available.append(social_network)
 
-    return render_template("edit.html", summary=user.summary, links=user.links, social_networks_available=social_networks_available, user_social_networks=user_social_networks)
+    return render_template("edit.html", name=user.name, summary=user.summary, links=user.links, social_networks_available=social_networks_available, user_social_networks=user_social_networks)
 
 
 @app.route("/links/<int:link_id>", methods=['DELETE'])

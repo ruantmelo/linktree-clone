@@ -63,3 +63,54 @@ summaryInputElement.addEventListener("blur", function(e) {
     summaryInputElement.readOnly = true;
     summaryEditElement.classList.remove("hidden");
 });
+
+
+// addSummaryElement = document.querySelector(".add-summary");
+nameInputElement = document.querySelector("#name-input");
+lastNameValue = nameInputElement.value;
+// summaryContainerElement = document.querySelector(".summary-container");
+nameEditElement = document.querySelector(".edit-name");
+
+nameEditElement.addEventListener("click", function(e) {
+    e.preventDefault();
+    nameEditElement.classList.add("hidden");
+    nameInputElement.readOnly = false;
+    nameInputElement.focus();
+})
+
+nameInputElement.addEventListener("focus", async function(e) {
+    lastNameValue = nameInputElement.value;
+})
+
+nameInputElement.addEventListener("blur", async function(e) {
+    e.preventDefault();
+    const name = nameInputElement.value;
+
+    if(name.length <= 0){
+        nameInputElement.value = lastNameValue;
+        nameInputElement.readOnly = true;
+        nameEditElement.classList.remove("hidden");
+    }
+
+    try{ 
+        await fetch("/edit", { headers: {
+            "Content-Type": "application/json"
+        }, credentials: "include", method: "POST", body: JSON.stringify({name: name})})
+    }
+    catch(e){
+        console.log(e);
+        nameInputElement.value = lastNameValue;
+    }
+
+    nameInputElement.readOnly = true;
+    nameEditElement.classList.remove("hidden")
+
+}
+)
+
+nameInputElement.addEventListener("keydown", function(e) {
+    if(e.keyCode === 13){
+        e.preventDefault();
+        nameInputElement.blur();
+    }
+});

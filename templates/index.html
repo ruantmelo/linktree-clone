@@ -16,15 +16,15 @@
         <i class="fa fa-solid fa-user"></i>
     </div>
 
-    <h2>{{ name }}</h2>
+    <h2 id="profile-name">{{ name }}</h2>
 
     {% if summary %}
-
         <p class="summary">
            {{ summary }}
         </p>
-
     {% endif %}
+
+    {% if links|length > 0 %}
     <ul class="links">
         {% for link in links %}
             <li>
@@ -32,26 +32,30 @@
             </li>
         {% endfor %}
     </ul>
+    {% endif %}
 
-    <ul class="social-networks">
-        {% for user_social_network in user_social_networks %}
-            <li>
-                <a href="{{ user_social_network.url }}" target="_blank">
-                    {% if user_social_network.social_network.name == "Instagram" %}
-                        <i class="fa fa-instagram"></i>
-                    {% elif user_social_network.social_network.name == "Facebook" %}
-                        <i class="fa fa-facebook-square"></i>
-                    {% elif user_social_network.social_network.name == "Linkedin" %}
-                        <i class="fa fa-linkedin-square"></i>
-                    {% elif user_social_network.social_network.name == "GitHub" %}
-                        <i class="fa fa-github-square"></i>
-                    {% elif user_social_network.social_network.name == "Twitter" %}
-                        <i class="fa fa-twitter"></i>
-                    {% endif %}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% if user_social_networks|length > 0  %}
+        <ul class="social-networks">
+            {% for user_social_network in user_social_networks %}
+                <li>
+                    <a href="{{ user_social_network.url }}" target="_blank">
+                        {% if user_social_network.social_network.name == "Instagram" %}
+                            <i class="fa fa-instagram"></i>
+                        {% elif user_social_network.social_network.name == "Facebook" %}
+                            <i class="fa fa-facebook-square"></i>
+                        {% elif user_social_network.social_network.name == "Linkedin" %}
+                            <i class="fa fa-linkedin-square"></i>
+                        {% elif user_social_network.social_network.name == "GitHub" %}
+                            <i class="fa fa-github-square"></i>
+                        {% elif user_social_network.social_network.name == "Twitter" %}
+                            <i class="fa fa-twitter"></i>
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     {% if is_owner %}
         <a class="edit" href="/edit">
             Edit profile

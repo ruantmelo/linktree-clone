@@ -68,14 +68,18 @@
     <div class="avatar rounded-circle border d-flex justify-content-center align-items-center">
         <i class="fa fa-solid fa-user"></i>
     </div>
-    <h2>{{ name }}</h2>
+    <div class="name-container">
+        <textarea id="name-input" readonly autocomplete="off" type="text" maxlength="80" >{{ name }}</textarea>
+        <i class="fa fa-solid fa-pen edit-name"></i>
+    </div>
+    
     <!-- <p class="summary">
         Full-stack programmer and CC student at UFAL <i class="edit-icon fa-solid fa-pen"></i>
     </p> -->
 
     {% if summary %}
         <div class="summary-container"> 
-            <textarea id="summary-input" autocomplete="off" type="text" maxlength="80" >{{ summary }}</textarea>
+            <textarea id="summary-input" readonly autocomplete="off" type="text" maxlength="200" >{{ summary }}</textarea>
             <i class="fa fa-solid fa-pen edit-summary"></i>
         </div>
         

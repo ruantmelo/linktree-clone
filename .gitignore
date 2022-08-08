@@ -160,5 +160,5 @@ cython_debug/
 #.idea/
 
 # Ignore sessions and database
-flask_session
+flask_session/
 app.db

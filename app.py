@@ -65,10 +65,11 @@ def after_request(r):
 @login_required
 def index():
     user_id = session["user_id"]
-    user = User.query.get(user_id)
-    user_social_networks = user.social_networks
+    # user = User.query.get(user_id)
+    # user_social_networks = user.social_networks
 
-    return render_template("index.html", name=user.name, summary=user.summary, links=user.links, user_social_networks = user_social_networks, is_owner = True)
+    return redirect("/{}".format(user_id))
+    # return render_template("index.html", name=user.name, summary=user.summary, links=user.links, user_social_networks = user_social_networks, is_owner = True)
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
